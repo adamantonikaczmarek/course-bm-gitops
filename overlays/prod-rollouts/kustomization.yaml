@@ -4,10 +4,13 @@ kind: Kustomization
 namespace: prod
 
 resources:
-- ../../base
+- ../../rollouts-base
 - infrastructure.yaml
 - frontend-rollout.yaml
 - ingress.yaml
+
+openapi:
+  path: https://raw.githubusercontent.com/argoproj/argo-schema-generator/main/schema/argo_all_k8s_kustomize_schema.json
 
 # tutaj trzeba będzie zmienić na target kind Rollout pewnie.
 patches:
@@ -19,7 +22,7 @@ patches:
       path: /spec/progressDeadlineSeconds
       value: 60
   target:
-    kind: Deployment
+    kind: Rollout
     labelSelector: app.kubernetes.io/part-of=booking-microservices
 
 images:
